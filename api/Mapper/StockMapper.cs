@@ -24,7 +24,7 @@ namespace api.Mapper
             };
         }
 
-        public static Stock ToStockModelFromCreateStockDto(this CreateStockDto stockDto)
+        public static Stock ToStockModelFromCreateStockDto(this RequestCreateStockDto stockDto)
         {
             return new Stock
             {
