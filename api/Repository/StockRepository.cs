@@ -3,6 +3,8 @@ using api.DTO.Stock;
 using api.Models;
 using api.Mapper;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace api.Repository
 {
