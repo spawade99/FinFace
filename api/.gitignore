@@ -1,0 +1,29 @@
+# Ignore build outputs
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# IDE-specific files
+.vscode/
+.idea/
+*.vs/
+
+# Environment and configuration files
+appsettings*.json
+!appsettings.json
+
+# Dependency directories
+node_modules/
+wwwroot/lib/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
