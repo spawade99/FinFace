@@ -1,4 +1,6 @@
 using api.Data;
+using api.DTO.Stock;
+using api.Mapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,14 +14,16 @@ namespace api.Controller
 
         [HttpGet]
         [Route("GetStocks")]
-        public async Task<ActionResult<IEnumerable<Models.Stock>>> GetStocks()
+        public async Task<ActionResult<IEnumerable<StockDto>>> GetStocks()
         {
-            return await _context.Stocks.ToListAsync();
+            var stocks = await _context.Stocks.ToListAsync();
+            var stockDto = stocks.Select(s => s.ToStockDto());
+            return Ok(stockDto);
         }
 
         [HttpGet]
         [Route("GetStock/{id}")]
-        public async Task<ActionResult<Models.Stock>> GetStock(int id)
+        public async Task<ActionResult<StockDto>> GetStock(int id)
         {
             var stock = await _context.Stocks.FindAsync(id);
 
@@ -28,7 +32,18 @@ namespace api.Controller
                 return NotFound();
             }
 
-            return stock;
+            return stock.ToStockDto();
+        }
+
+        [HttpPost]
+        [Route("CreateStock")]
+        public async Task<ActionResult<StockDto>> CreateStock([FromBody] CreateStockDto stockDto)
+        {
+            var stock = stockDto.ToStockModelFromCreateStockDto();
+            _context.Stocks.Add(stock);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetStock), new { id = stock.Id }, stock.ToStockDto());
         }
 
     }
