@@ -10,5 +10,6 @@ namespace api.Repository
         Task<Stock> CreateStock(RequestCreateStockDto createStockDto);
         Task<Stock?> UpdateStock(int id, RequestUpdateStockDto updateStockDto);
         Task<Stock?> DeleteStock(int id);
+        Task<bool> IsStockExists(int id);
     }
 }

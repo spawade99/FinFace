@@ -5,6 +5,7 @@ using api.Mapper;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Formats.Asn1;
 
 namespace api.Repository
 {
@@ -32,14 +33,19 @@ namespace api.Repository
             return stock;
         }
 
+        public async Task<bool> IsStockExists(int id)
+        {
+            return await _dBContext.Stocks.AnyAsync(x => x.Id == id);
+        }
+
         public async Task<IEnumerable<Stock>> GetAllStocks()
         {
-            return await _dBContext.Stocks.ToListAsync();
+            return await _dBContext.Stocks.Include(c => c.Comments).ToListAsync();
         }
 
         public async Task<Stock?> GetStockById(int id)
         {
-            return await _dBContext.Stocks.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dBContext.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Stock?> UpdateStock(int id, RequestUpdateStockDto updateStockDto)

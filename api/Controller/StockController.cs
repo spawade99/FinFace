@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using api.DTO.Stock;
 using api.Mapper;
 using api.Models;
@@ -17,6 +18,8 @@ namespace api.Controller
         public async Task<ActionResult<IEnumerable<StockDto>>> GetStocks()
         {
             var stocks = await _repository.GetAllStocks();
+            // var serializedStocks = System.Text.Json.JsonSerializer.Serialize(stocks);
+            // Console.WriteLine(serializedStocks);
             var stockDto = stocks.Select(s => s.ToStockDto());
             return Ok(stockDto);
         }

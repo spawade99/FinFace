@@ -10,6 +10,6 @@ namespace api.Repository
         Task<Comment> DeleteComment(int Id);
         Task<Comment> CreateComment(CreateCommentDto commentDto);
 
-        Task<Comment> UpdateComment(int Id, CreateCommentDto commentDto);
+        Task<Comment> UpdateComment(int Id, UpdateCommentDto commentDto);
     }
 }

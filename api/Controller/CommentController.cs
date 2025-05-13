@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Controller
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class CommentController(ICommentRepository repository) : ControllerBase
     {
         private readonly ICommentRepository _repository = repository;
@@ -19,6 +21,18 @@ namespace api.Controller
             return Ok(comments);
         }
 
+        [HttpGet]
+        [Route("GetComment/{id}")]
+        public async Task<ActionResult<Comment>> GetComment([FromRoute] int id)
+        {
+            var comment = await _repository.GetComment(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return Ok(comment);
+        }
+
         [HttpPost]
         [Route("CreateComment")]
         public async Task<ActionResult<Comment>> CreateComment([FromBody] CreateCommentDto comment)
@@ -29,12 +43,12 @@ namespace api.Controller
             }
             Comment savedComment = await _repository.CreateComment(comment);
 
-            return CreatedAtAction(nameof(GetComments), new { id = savedComment.Id }, comment);
+            return CreatedAtAction(nameof(GetComment), new { id = savedComment.Id }, comment);
         }
 
         [HttpPut]
         [Route("UpdateComment/{id}")]
-        public async Task<IActionResult> UpdateComment([FromRoute] int id, [FromBody] CreateCommentDto comment)
+        public async Task<IActionResult> UpdateComment([FromRoute] int id, [FromBody] UpdateCommentDto comment)
         {
             if (comment == null)
             {
