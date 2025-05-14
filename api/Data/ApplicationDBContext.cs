@@ -2,6 +2,7 @@ using api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace api.Data
 {
@@ -23,6 +24,15 @@ namespace api.Data
                 new IdentityRole { Name = "User", NormalizedName = "USER" }
             };
             modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(warnings =>
+                warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+
+            base.OnConfiguring(optionsBuilder);
         }
     }
 }
