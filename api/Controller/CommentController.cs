@@ -22,7 +22,7 @@ namespace api.Controller
         }
 
         [HttpGet]
-        [Route("GetComment/{id}")]
+        [Route("GetComment/{id:int}")]
         public async Task<ActionResult<Comment>> GetComment([FromRoute] int id)
         {
             var comment = await _repository.GetComment(id);
@@ -47,7 +47,7 @@ namespace api.Controller
         }
 
         [HttpPut]
-        [Route("UpdateComment/{id}")]
+        [Route("UpdateComment/{id:int}")]
         public async Task<IActionResult> UpdateComment([FromRoute] int id, [FromBody] UpdateCommentDto comment)
         {
             if (comment == null)
@@ -57,6 +57,18 @@ namespace api.Controller
 
             await _repository.UpdateComment(id, comment);
 
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("DeleteComment/{id:int}")]
+        public async Task<IActionResult> DeleteComment([FromRoute] int id)
+        {
+            var comment = await _repository.DeleteComment(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
             return NoContent();
         }
     }
